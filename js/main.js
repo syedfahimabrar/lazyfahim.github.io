@@ -328,6 +328,9 @@ async function LoadProjects() {
       codes += `<li>${tech}</li>`;
     }
     codes += `</ul>
+    <div class="blog-item-link">
+                    <a onclick="${doc.data().onclick}" class="btn btn-default loadPost">See More</a>
+                </div>
     </div>
 
   </div>`;
