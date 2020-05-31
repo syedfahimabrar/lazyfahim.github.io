@@ -25,18 +25,17 @@ const defaultStorage = firebase.storage();
     LoadSchoolData();
     LoadWorkExpData('WorkExp', 'job');
     LoadWorkExpData('Volunteering', 'volt');
-    LoadSkills('langskill','lang');
-    LoadSkills('frameskill','frame');
-    LoadSkills('technologies','tech');
+    LoadSkills('langskill', 'lang');
+    LoadSkills('frameskill', 'frame');
+    LoadSkills('technologies', 'tech');
     imageUrl('fahim');
-    LoadStory();
     LoadProjects();
     $(".project-thumbnail").on('click', function (event) {
-			event.stopPropagation();
-			event.stopImmediatePropagation();
-			event.preventDefault();
-			alert('clicked');
-		});
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      event.preventDefault();
+      alert('clicked');
+    });
     //==============___Page Loader___================
     $('#loading-wraper').fadeIn(300);
 
@@ -167,10 +166,10 @@ const defaultStorage = firebase.storage();
             "entry.405353643": $("#contactForm #subject").val(),
             "entry.1102463223": $("#contactForm #message").val()
           },
-          contentType:"application/javascript;charset=utf-8",
+          contentType: "application/javascript;charset=utf-8",
           dataType: 'jsonp',
-          crossDomain:true,
-          complete: function(xhr, textStatus) {
+          crossDomain: true,
+          complete: function (xhr, textStatus) {
             console.log(xhr.status);
           },
           error: function (error) {
@@ -196,7 +195,7 @@ const defaultStorage = firebase.storage();
               $("#contactSuccess").addClass("hidden");
             }
           }
-        
+
         });
       }
     });
@@ -270,10 +269,10 @@ async function LoadWorkExpData(schema, divid) {
   console.log(codes);
 }
 
-async function LoadSkills(divid,type) {
+async function LoadSkills(divid, type) {
   var codes = ``;
   var querySnapshot = await dbRef.collection('Skill')
-    .where('type', '==', type).orderBy('id','asc').get();
+    .where('type', '==', type).orderBy('id', 'asc').get();
   var i = 0;
   for (const doc of querySnapshot.docs) {
     i++;
@@ -294,16 +293,16 @@ async function LoadSkills(divid,type) {
     <span class="progress-completed">${doc.data().percent}%</span>
   </div></li>`;
   }
-  document.getElementById(divid).innerHTML+=codes;
+  document.getElementById(divid).innerHTML += codes;
 }
 
-async function LoadProjects(){
+async function LoadProjects() {
   var codes = ``;
-  var querySnapshot = await dbRef.collection('Projects').orderBy('id','asc').get();
+  var querySnapshot = await dbRef.collection('Projects').orderBy('id', 'asc').get();
   var i = 0;
-  for(const doc of querySnapshot.docs){
+  for (const doc of querySnapshot.docs) {
     const imageurl = await imageUrl(doc.data().thumbimage);
-    codes+= `<div class="project-item">
+    codes += `<div class="project-item">
     <!-- ==> Put your thumbnail as a background -->
     <a 
       onclick="${doc.data().onclick}" class="project-thumbnail nivobox" data-lightbox-gallery="portfolio"
@@ -324,21 +323,21 @@ async function LoadProjects(){
       <p class="project-text-description">${doc.data().description}</p>
       <h4>Used Technologies</h4>
       <ul>`;
-      var techs = doc.data().techs.split(',');
-      for(const tech of techs){
-        codes+= `<li>${tech}</li>`;
-      }
-    codes +=  `</ul>
+    var techs = doc.data().techs.split(',');
+    for (const tech of techs) {
+      codes += `<li>${tech}</li>`;
+    }
+    codes += `</ul>
     </div>
 
   </div>`;
   }
-  document.getElementById('projects').innerHTML+=codes;
+  document.getElementById('projects').innerHTML += codes;
 }
 
-async function imageUrl(imageName){
+async function imageUrl(imageName) {
   var storageRef = defaultStorage.ref();
-  const url = await  storageRef.child(`/${imageName}`).getDownloadURL();
+  const url = await storageRef.child(`/${imageName}`).getDownloadURL();
   return url;
 }
 // async function LoadStory(){
@@ -347,15 +346,16 @@ async function imageUrl(imageName){
 //     alert( "Load was performed." );
 //   });
 // }
-function  LoadStory(){
+function LoadStory() {
   $.ajax({
-    url: 'https://stackoverflow.com/story/lazyfahim', // URL HERE
+    url: 'single.html', // URL HERE
     type: 'GET',
+    crossDomain: true,
     success: function (html) {
 
-      var $lis = $(html).find('.timeline'); // Loads the content inside #blogPost div
+      var data = $(html).find('#form-section-PersonalInfo'); // Loads the content inside #blogPost div
 
-      $("#devstor").html($lis);
+      $("#devstor").html(data);
     }
   });
 }
