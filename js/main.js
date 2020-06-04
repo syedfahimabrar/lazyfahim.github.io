@@ -28,7 +28,6 @@ const defaultStorage = firebase.storage();
     LoadSkills('langskill', 'lang');
     LoadSkills('frameskill', 'frame');
     LoadSkills('technologies', 'tech');
-    imageUrl('fahim');
     LoadProjects();
     $(".project-thumbnail").on('click', function (event) {
       event.stopPropagation();
@@ -339,6 +338,8 @@ async function LoadProjects() {
 }
 
 async function imageUrl(imageName) {
+  if(imageName.includes('http'))
+    return imageName;
   var storageRef = defaultStorage.ref();
   const url = await storageRef.child(`/${imageName}`).getDownloadURL();
   return url;
